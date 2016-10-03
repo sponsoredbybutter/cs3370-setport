@@ -1,0 +1,6 @@
+Bad argument
+Missing port number
+Missing environment variable name
+Bad port number
+Bad environment variable name
+Listening on port 

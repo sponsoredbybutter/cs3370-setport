@@ -1,0 +1,5 @@
+uso: setport {-p | --port} <número de puerto>
+       setport -e [PORT]
+       setport {-h | --help | -?}
+       setport {-v | --version}
+       setport {-! | --about}

@@ -1,0 +1,6 @@
+Argumento mal
+Falta el número de puerto
+Medio ambiente nombre de la variable que falta
+Número de puerto mala
+Mal ambiente nombre de la variable
+Escucha en el puerto 
