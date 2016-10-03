@@ -22,10 +22,10 @@ Translation
 setport chooses its output language by checking the locale specified in the
 following locale environment variables, in the given order:
 
-	- LANGUAGE
-	- LC_ALL
-	- LC_MESSAGES
-	- LANG
+- LANGUAGE
+- LC_ALL
+- LC_MESSAGES
+- LANG
 
 Translation requires that all localization files (setport.*.txt) exist in the
 target language. For example, to enable Polish translation, you must provide
