@@ -23,8 +23,8 @@ setport chooses its output language by checking the locale specified in the
 following locale environment variables, in the given order:
 
 	- LANGUAGE
-	- LC\_ALL
-	- LC\_MESSAGES
+	- LC_ALL
+	- LC_MESSAGES
 	- LANG
 
 Translation requires that all localization files (setport.*.txt) exist in the
