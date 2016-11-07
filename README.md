@@ -4,6 +4,8 @@ setport
 Installation
 -------------
 
+Installation requires g++ 5.
+
 To install setport, change the source code directory and run `make install`.
 This will compile the program and test suite, run the test suite, and, if all
 tests are successful, create a bash alias to setport. To only compile and run
