@@ -1,5 +1,6 @@
 usage: setport {-p | --port} <portnum>
-       setport -e [PORT]
+       setport {-p | --port} {-e | --environment} [PORT]
+       setport {-e | --environment} [PORT]
        setport {-h | --help | -?}
        setport {-v | --version}
        setport {-! | --about}

@@ -13,7 +13,7 @@ enum msgidx: int
 
 const int MSG_LEN = 256;
 
-const std::string VERSION = "setport 1.2.0";
+const std::string VERSION = "setport 1.2.1";
 
 const std::string USAGE_FILE = "setport.usage_en.txt";
 const std::string ABOUT_FILE = "setport.about_en.txt";

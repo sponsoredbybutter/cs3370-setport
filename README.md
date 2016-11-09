@@ -33,6 +33,19 @@ Translation requires that all localization files (setport.*.txt) exist in the
 target language. For example, to enable Polish translation, you must provide
 setport.about\_pl.txt, setport.usage\_pl.txt, and setport.messages\_pl.txt.
 
+A New Day and a New Fork
+-------------------------
+
+The fifth change order to setport called for an outside man to make some updates. 
+Those updates include:
+* Added --environment as an alternative to the -e flag.
+* Added -e and --environment as options after -p or --port.
+* Added 16 new tests for environmental variables.
+* Made this update to the readme.
+* Updated the help text to reflect the new --environment option.
+* Incremented version number.
+
+
 License
 --------
 

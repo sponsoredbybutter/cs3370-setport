@@ -99,6 +99,8 @@ int main(int argc, char *args[])
 	
 	// Long, deeply nested if-else chains are ugly and flagile.
 	// Long live the FSM.
+	// The FSM is an enemy to all mankind
+	// May the FSM be covered in meaty marinara and fed to the hounds
 	parserState state = { getFlag };
 	while (state.fn != NULL)
 	{
@@ -134,7 +136,7 @@ parserState getFlag(queue<string>& args, int& status)
 	{
 		return { showVersion };
 	}
-	else if (arg == "-e")
+	else if (arg == "-e" || arg == "--environment")
 	{
 		return { getEnvName };
 	}
@@ -169,6 +171,9 @@ parserState getPort(queue<string>& args, int& status)
 	}
 	catch (invalid_argument& e)
 	{
+		// Use case is -p -e
+		if (arg == "-e" || arg == "--environment") return { getEnvName };
+		
 		cerr << msgs[BAD_PORT] << endl << usage << endl;
 		status = 1;
 		return STOP;

@@ -29,7 +29,10 @@ string msgs[MSG_COUNT];
 // Give a bad return value and talk on cerr if tests don't pass.
 int main(int argc, char *args[])
 {
-	string lang(args[1]);
+	// Added default lang = "en" because I knew not that arguments were required and it was throwing exceptions
+	string lang;
+	if(argc > 1) lang = args[1];
+	else lang = "en";
 	regex re("_en");
 	usage = readFile(regex_replace(USAGE_FILE, re, "_" + lang));
 	ifstream msgstream(regex_replace(MSG_FILE, re, "_" + lang));
@@ -47,13 +50,27 @@ int main(int argc, char *args[])
 	
 	int passed = 0;
 	
-	array<tuple<string, result>, 18> testCases = {
+	setenv("PORT","8080",1);
+	setenv("GARBAGE_DAY","9302",1);
+	unsetenv("SUPER_NONEXISTENT");
+	setenv("TRASH_PORT", "monkeybutter", 1);
+	
+	array<tuple<string, result>, 34> testCases = {
 		// Positive tests
 		make_tuple("LANGUAGE="+lang+" ./setport", result{0, "", usage}),
 		make_tuple("LANGUAGE="+lang+" ./setport -h", result{0, "", usage}),
 		make_tuple("LANGUAGE="+lang+" ./setport --help", result{0, "", usage}),
 		make_tuple("LANGUAGE="+lang+" ./setport -p 4040", result{0, "", msgs[LISTENING] + "4040"}),
 		make_tuple("LANGUAGE="+lang+" ./setport --port 4040", result{0, "", msgs[LISTENING] + "4040"}),
+		// New environmental tests!
+		make_tuple("LANGUAGE="+lang+" ./setport -p -e", result{0, "", msgs[LISTENING] + "8080"}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port -e", result{0, "", msgs[LISTENING] + "8080"}),
+		make_tuple("LANGUAGE="+lang+" ./setport -p --environment", result{0, "", msgs[LISTENING] + "8080"}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port --environment", result{0, "", msgs[LISTENING] + "8080"}),
+		make_tuple("LANGUAGE="+lang+" ./setport -p -e GARBAGE_DAY", result{0, "", msgs[LISTENING] + "9302"}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port -e GARBAGE_DAY", result{0, "", msgs[LISTENING] + "9302"}),
+		make_tuple("LANGUAGE="+lang+" ./setport -p --environment GARBAGE_DAY", result{0, "", msgs[LISTENING] + "9302"}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port --environment GARBAGE_DAY", result{0, "", msgs[LISTENING] + "9302"}),
 		
 		// Negative tests
 		make_tuple("LANGUAGE="+lang+" ./setport help", result{1, msgs[BAD_ARG] + "\n" + usage, ""}),
@@ -68,7 +85,17 @@ int main(int argc, char *args[])
 		make_tuple("LANGUAGE="+lang+" ./setport --port", result{1, msgs[MISSING_PORT] + "\n" + usage, ""}),
 		make_tuple("LANGUAGE="+lang+" ./setport -p 90642", result{1, msgs[BAD_PORT] + "\n" + usage, ""}),
 		make_tuple("LANGUAGE="+lang+" ./setport -x 45321", result{1, msgs[BAD_ARG] + "\n" + usage, ""}),
-		make_tuple("LANGUAGE="+lang+" ./setport -P 714", result{1, msgs[BAD_ARG] + "\n" + usage, ""})
+		make_tuple("LANGUAGE="+lang+" ./setport -P 714", result{1, msgs[BAD_ARG] + "\n" + usage, ""}),
+		
+		// New negative environmental tests!
+		make_tuple("LANGUAGE="+lang+" ./setport -p -e SUPER_NONEXISTENT", result{1, msgs[BAD_ENV] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port -e SUPER_NONEXISTENT", result{1, msgs[BAD_ENV] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport -p --environment SUPER_NONEXISTENT", result{1, msgs[BAD_ENV] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port --environment SUPER_NONEXISTENT", result{1, msgs[BAD_ENV] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport -p -e TRASH_PORT", result{1, msgs[BAD_PORT] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port -e TRASH_PORT", result{1, msgs[BAD_PORT] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport -p --environment TRASH_PORT", result{1, msgs[BAD_PORT] + "\n" + usage, ""}),
+		make_tuple("LANGUAGE="+lang+" ./setport --port --environment TRASH_PORT", result{1, msgs[BAD_PORT] + "\n" + usage, ""})
 	};
 	
 	for (int i=0; i<testCases.size(); i++)
@@ -85,6 +112,9 @@ int main(int argc, char *args[])
 			}
 		}
 	}
+	
+	unsetenv("GARBAGE_DAY");
+	unsetenv("TRASH_PORT");
 	
 	cerr << "Passed " << passed << " of " << testCases.size()
 			<< " test(s)" << endl;
